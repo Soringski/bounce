@@ -1,0 +1,25 @@
+body {
+    font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
+    font-weight: 400;
+    font-size: large;
+    background-color: #fbfbfb;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+p {
+    margin-bottom: 10px;
+}
+
+#defaultCanvas1 {
+    border-radius: 20px;
+    border: solid 1px black;
+
+}
