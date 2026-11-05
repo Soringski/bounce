@@ -14,12 +14,18 @@ body {
     height: 100%;
 }
 
-p {
+p,
+.container {
     margin-bottom: 10px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 425px;
 }
 
 #defaultCanvas1 {
     border-radius: 20px;
     border: solid 1px black;
-
 }
