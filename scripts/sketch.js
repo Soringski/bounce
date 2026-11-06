@@ -13,6 +13,7 @@ let setExciterPath = false;
 
 let resonator;
 let exciter;
+let startDraggingOffBounds = false;
 
 function setup() {
     createCanvas(canvasSize, canvasSize);
@@ -29,18 +30,10 @@ function draw() {
         exciter.update();
         exciter.setExciterPath();
     } else {
-        if (
-            mouseX < canvasSize
-            && mouseX > 0
-            && mouseY < canvasSize
-            && mouseY > 0
-        ) {
+        if (onCanvas() && !startDraggingOffBounds) {
             exciter.speed = 25;
             let intersectPoint = edgeIntersect(createVector(resonator.x, resonator.y), createVector(mouseX, mouseY), resonatorVerts);
-            if (
-                dist(resonator.x, resonator.y, mouseX, mouseY) >
-                dist(resonator.x, resonator.y, intersectPoint.x, intersectPoint.y)
-            ) {
+            if (dist(resonator.x, resonator.y, mouseX, mouseY) > dist(resonator.x, resonator.y, intersectPoint.x, intersectPoint.y)) {
                 exciter.setCoordinates(intersectPoint.x, intersectPoint.y);
                 exciter.update();
             } else {
@@ -57,6 +50,10 @@ function draw() {
     drawCursor();
 }
 
+function onCanvas() {
+    return mouseX < canvasSize && mouseX > 0 && mouseY < canvasSize && mouseY > 0;
+}
+
 function drawCursor() {
     push();
     fill('#000');
@@ -65,9 +62,21 @@ function drawCursor() {
 }
 function mouseReleased() {
     exciter.isDrawingPath = false;
+    startDraggingOffBounds = false;
 }
+
+function mousePressed() {
+    if (!onCanvas()) {
+        startDraggingOffBounds = true;
+        console.log(startDraggingOffBounds);
+
+    }
+}
+
 function mouseDragged() {
-    exciter.isDrawingPath = true;
+    if (onCanvas()) {
+        if (!startDraggingOffBounds) exciter.isDrawingPath = true;
+    }
 }
 
 
