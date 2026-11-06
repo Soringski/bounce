@@ -1,6 +1,6 @@
 # Bounce
 
-> *(While your feet are stompin' and the jam is pumpin')* - Technotronic
+> *While your feet are stompin' and the jam is pumpin'* - Technotronic
 
 An app that triggers Euclidean rhythms and audio patterns based on an *exciter* bouncing around inside a geometric *resonator*.
 A fun experiment built with Electron, p5.js, JavaScript, HTML and CSS.
