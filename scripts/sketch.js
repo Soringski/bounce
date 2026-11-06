@@ -7,8 +7,6 @@ let speed;
 
 let radius = 175;
 
-let resonatorVerts = [];
-
 let setExciterPath = false;
 
 let resonator;
@@ -28,11 +26,11 @@ function draw() {
     background(255);
     if (exciter.isDrawingPath) {
         exciter.update();
-        exciter.setExciterPath();
+        exciter.setExciterPath(resonator.verts);
     } else {
         if (onCanvas() && !startDraggingOffBounds) {
             exciter.speed = 25;
-            let intersectPoint = edgeIntersect(createVector(resonator.x, resonator.y), createVector(mouseX, mouseY), resonatorVerts);
+            let intersectPoint = edgeIntersect(createVector(resonator.x, resonator.y), createVector(mouseX, mouseY), resonator.verts);
             if (dist(resonator.x, resonator.y, mouseX, mouseY) > dist(resonator.x, resonator.y, intersectPoint.x, intersectPoint.y)) {
                 exciter.setCoordinates(intersectPoint.x, intersectPoint.y);
                 exciter.update();
@@ -68,8 +66,6 @@ function mouseReleased() {
 function mousePressed() {
     if (!onCanvas()) {
         startDraggingOffBounds = true;
-        console.log(startDraggingOffBounds);
-
     }
 }
 
@@ -78,7 +74,6 @@ function mouseDragged() {
         if (!startDraggingOffBounds) exciter.isDrawingPath = true;
     }
 }
-
 
 function edgeIntersect(o, p, verts) {
     let rx = p.x - o.x, ry = p.y - o.y;
@@ -97,5 +92,6 @@ function edgeIntersect(o, p, verts) {
             return createVector(o.x + t * rx, o.y + t * ry);
         }
     }
-    return null;
+    // return null;
+    return createVector(0, 0);
 }
