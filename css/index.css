@@ -30,6 +30,10 @@ p,
     border: solid 1px black;
 }
 
+#defaultCanvas1:hover {
+    cursor: none;
+}
+
 .range-field {
     display: grid;
     gap: 8px;
