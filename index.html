@@ -8,14 +8,21 @@
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/index.css">
     <script src="scripts/sketch.js"></script>
+    <script type="module" src="scripts/index.js"></script>
     <title>︵‿︵‿BOUNCE‿︵‿︵</title>
 </head>
 
 <body>
     <div class="container">
         <p>Controls</p>
-        <label for="amountOfSides">Amount of sides</label>
-        <input type="range" name="inputSlider" id="amountOfSides">
+        <div class="range-field">
+            <div class="range-head">
+                <label for="range-input">./sides</label>
+                <output for="range-input" id="range-output">5</output>
+            </div>
+            <input type="range" class="range" id="range-input" min="3" max="20" step="1" value="8">
+        </div>
+
     </div>
 </body>
 

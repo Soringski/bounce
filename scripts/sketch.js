@@ -7,7 +7,6 @@ let pulse;
 let speed = 3;
 
 let radius = 175;
-let pointsOnCircle = 4;
 
 function setup() {
     createCanvas(canvasSize, canvasSize);
@@ -34,8 +33,8 @@ function drawObject() {
     noFill();
     strokeWeight(3);
     beginShape();
-    for (let i = 0; i <= pointsOnCircle; i++) {
-        const point = createVector(radius * sin((360 / pointsOnCircle) * i), radius * cos((360 / pointsOnCircle) * i));
+    for (let i = 0; i <= window.sides; i++) {
+        const point = createVector(radius * sin((360 / window.sides) * i), radius * cos((360 / window.sides) * i));
         vertex(point.x, point.y);
         push();
         fill('#000');
