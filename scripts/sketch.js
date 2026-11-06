@@ -36,6 +36,10 @@ function draw() {
         } else {
             drawExciter(mouseX, mouseY);
         }
+        push();
+        fill('#000');
+        circle(mouseX, mouseY, 6);
+        pop();
     } else {
         speed = 5;
         drawExciter(center.x, center.y);
