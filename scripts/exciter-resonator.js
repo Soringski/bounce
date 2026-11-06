@@ -38,19 +38,14 @@ class Exciter {
         const endY = this.y + this.velocity.y;
         const endPos = createVector(endX, endY);
 
-
-
         push();
         noFill();
         let intersectPoint = edgeIntersect(createVector(this.x, this.y), endPos, verts);
         circle(intersectPoint.x, intersectPoint.y, 20);
-
         pop();
 
-        strokeWeight(3);
-        //line(this.x, this.y, endX, endY);
-
         // Arrowhead
+        strokeWeight(3);
         const intersectDistance = dist(this.x, this.y, intersectPoint.x, intersectPoint.y);
         const mag = this.velocity.mag();
         if (mag > 0) {
@@ -82,16 +77,17 @@ class Exciter {
 
 class Resonator {
     verts = [];
-    constructor(x, y) {
+    constructor(x, y, radius) {
         this.x = x;
         this.y = y;
+        this.radius = radius;
     }
     update() {
         this.verts = [];
         for (let i = 0; i <= window.sides; i++) {
             const point = createVector(
-                this.x + radius * sin((360 / window.sides) * i),
-                this.y + radius * cos((360 / window.sides) * i)
+                this.x + this.radius * sin((360 / window.sides) * i),
+                this.y + this.radius * cos((360 / window.sides) * i)
             );
             this.verts.push(point);
         }
@@ -108,6 +104,6 @@ class Resonator {
         }
         endShape();
         strokeWeight(1);
-        circle(this.x, this.y, radius * 2);
+        circle(this.x, this.y, this.radius * 2);
     }
 }

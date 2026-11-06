@@ -1,16 +1,13 @@
 /// <reference types="p5/global" />
 
+// resonator sides through window.sides from index.js
 let canvasSize = 450;
-
 let center;
-let speed;
-
-let radius = 175;
-
 let setExciterPath = false;
-
 let resonator;
 let exciter;
+
+// block canvas changes from hovering while adjusting sliders
 let startDraggingOffBounds = false;
 
 function setup() {
@@ -18,7 +15,7 @@ function setup() {
     center = createVector(width / 2, width / 2);
     angleMode(DEGREES);
 
-    resonator = new Resonator(center.x, center.y);
+    resonator = new Resonator(center.x, center.y, 175);
     exciter = new Exciter(resonator.x, resonator.y);
 }
 
@@ -58,6 +55,13 @@ function drawCursor() {
     circle(mouseX, mouseY, 6);
     pop();
 }
+
+function mouseWheel(event) {
+    // event.delta +100 -> scroll up
+    // event.delta -100 -> scroll down
+    //event.delta < 0 ? window.sides++ : window.sides--;
+}
+
 function mouseReleased() {
     exciter.isDrawingPath = false;
     startDraggingOffBounds = false;
