@@ -88,11 +88,11 @@ function edgeIntersect(o, p, verts) {
         let d = verts[(i + 1) % verts.length];
         let sx = d.x - c.x, sy = d.y - c.y;
 
-        let noemer = rx * sy - ry * sx;
-        if (noemer === 0) continue;
+        let denominator = rx * sy - ry * sx;
+        if (denominator === 0) continue;
 
-        let t = ((c.x - o.x) * sy - (c.y - o.y) * sx) / noemer;
-        let u = ((c.x - o.x) * ry - (c.y - o.y) * rx) / noemer;
+        let t = ((c.x - o.x) * sy - (c.y - o.y) * sx) / denominator;
+        let u = ((c.x - o.x) * ry - (c.y - o.y) * rx) / denominator;
 
         if (t >= 0 && u >= 0 && u <= 1) {
             return createVector(o.x + t * rx, o.y + t * ry);
