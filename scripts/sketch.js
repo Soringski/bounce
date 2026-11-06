@@ -25,9 +25,9 @@ function setup() {
 
 function draw() {
     background(255);
-    if (setExciterPath) {
-        exciter.update();;
-        drawCursor();
+    if (exciter.isDrawingPath) {
+        exciter.update();
+        exciter.setExciterPath();
     } else {
         if (
             mouseX < canvasSize
@@ -47,7 +47,6 @@ function draw() {
                 exciter.setCoordinates(mouseX, mouseY);
                 exciter.update();
             }
-            drawCursor();
         } else {
             exciter.speed = 5;
             exciter.setCoordinates(resonator.x, resonator.y);
@@ -55,6 +54,7 @@ function draw() {
         }
     }
     resonator.update();
+    drawCursor();
 }
 
 function drawCursor() {
@@ -64,14 +64,10 @@ function drawCursor() {
     pop();
 }
 function mouseReleased() {
-    setExciterPath = false;
+    exciter.isDrawingPath = false;
 }
 function mouseDragged() {
-    setExciterPath = true;
-}
-
-function drawExciter(x, y) {
-
+    exciter.isDrawingPath = true;
 }
 
 
