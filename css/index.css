@@ -87,7 +87,7 @@ p {
 .range::-webkit-slider-runnable-track {
     box-sizing: border-box;
     height: 2px;
-    background: #e2e8f0;
+    background: #bdbdbd;
     border: 0;
     border-radius: 0;
 }
