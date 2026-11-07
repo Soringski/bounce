@@ -1,12 +1,31 @@
 "use strict";
 
 class Bubble {
-    constructor(x, y) {
+    done = false;
+    totalCycles = 10;
+    cycle = 1;
+    startRadius;
+    endRadius;
+    constructor(x, y, startRadius = 20) {
         this.x = x;
         this.y = y;
+        this.startRadius = startRadius;
+        this.endRadius = startRadius + 40;
     }
     pop() {
-        console.log(`pop at ${this.x} ${this.y}`);
+        push();
+        // Online tool at: https://oklch.com/#0.6867,0.1788,23.02,100
+        // has different ranges for perceived lightness and chroma
+        colorMode(OKLCH, 1, 0.4, 360, 100);
+        const alpha = map(this.cycle, 1, this.totalCycles, 100, 0);
+        fill(0.6867, 0.1788, 295.66, alpha);
+        noStroke();
+        const radius = map(this.cycle, 1, this.totalCycles, this.startRadius, this.endRadius);
+        circle(this.x, this.y, radius);
+        pop();
+
+        if (this.cycle == this.totalCycles) this.done = true;
+        this.cycle += 1;
     }
 }
 
@@ -39,9 +58,14 @@ class Exciter {
 
     #drawExciter(isPulsing) {
         this.#pulse = isPulsing ? map(sin(frameCount * this.pulseSpeed), -1, 1, 0, 5) : 0;
-        fill('#f56464');
+        push();
+        // Online tool at: https://oklch.com/#0.6867,0.1788,23.02,100
+        // has different ranges for perceived lightness and chroma
+        colorMode(OKLCH, 1, 0.4, 360);
+        fill(0.6867, 0.1788, 23.02);
         noStroke();
         circle(this.x, this.y, this.radius + this.#pulse);
+        pop();
     }
 
     bounce(verts) {
@@ -63,7 +87,9 @@ class Exciter {
                 this.isBouncing = false;
                 break;
             }
+            bubbles.push(new Bubble(this.intersectPoint.x, this.intersectPoint.y, 20));
             [this.velocity, this.intersectPoint, this.intersectLine] = next;
+
         }
 
         // Then draw: this leg, the next leg, and the exciter (once)

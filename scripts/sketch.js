@@ -31,6 +31,10 @@ function draw() {
     background(bg);
     resonator.drawBackground();
 
+    for (let bubble of bubbles) bubble.pop();
+    bubbles = bubbles.filter(x => !x.done);
+
+
     // inset walls by resonator stroke width and radius to prevent 
     // out of bounds bouncing
     const walls = resonator.insetVerts(exciter.radius / 2 + 1.5);
@@ -72,6 +76,12 @@ function draw() {
 
 function onCanvas() {
     return mouseX < canvasSize && mouseX > 0 && mouseY < canvasSize && mouseY > 0;
+}
+
+function reformatOKLCH(l, c, h) {
+    // Online tool at: https://oklch.com/#0.6867,0.1788,23.02,100
+    // has different ranges for perceived lightness and chroma
+    return [l, c, h];
 }
 
 function drawCursor() {
