@@ -16,7 +16,7 @@ function setup() {
     angleMode(DEGREES);
 
     resonator = new Resonator(center.x, center.y, 175);
-    exciter = new Exciter(resonator.x, resonator.y);
+    exciter = new Exciter(resonator.x, resonator.y, 20);
 }
 
 function draw() {
@@ -36,12 +36,14 @@ function draw() {
         if (onCanvas() && !startDraggingOffBounds) {
             exciter.speed = 25;
             let [intersectPoint, _] = edgeIntersect(createVector(resonator.x, resonator.y), createVector(mouseX, mouseY), resonator.verts);
-            if (dist(resonator.x, resonator.y, mouseX, mouseY) > dist(resonator.x, resonator.y, intersectPoint.x, intersectPoint.y)) {
-                exciter.setCoordinates(intersectPoint.x, intersectPoint.y);
-                exciter.update();
-            } else {
-                exciter.setCoordinates(mouseX, mouseY);
-                exciter.update();
+            if (intersectPoint !== null) {
+                if (dist(resonator.x, resonator.y, mouseX, mouseY) > dist(resonator.x, resonator.y, intersectPoint.x, intersectPoint.y)) {
+                    exciter.setCoordinates(intersectPoint.x, intersectPoint.y);
+                    exciter.update();
+                } else {
+                    exciter.setCoordinates(mouseX, mouseY);
+                    exciter.update();
+                }
             }
         } else {
             exciter.speed = 5;
@@ -63,12 +65,6 @@ function drawCursor() {
     fill('#000');
     circle(mouseX, mouseY, 6);
     pop();
-}
-
-function mouseWheel(event) {
-    // event.delta +100 -> scroll up
-    // event.delta -100 -> scroll down
-    //event.delta < 0 ? window.sides++ : window.sides--;
 }
 
 function mouseReleased() {

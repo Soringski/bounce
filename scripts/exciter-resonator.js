@@ -1,16 +1,18 @@
 "use strict";
 
 class Exciter {
+    radius;
     speed = 5;
-    pulse;
+    #pulse;
     isDrawingPath = false;
     isBouncing = false;
     velocity = createVector(0, 0);
     intersectPoint;
     intersectLine = [];
-    constructor(x, y) {
+    constructor(x, y, radius) {
         this.x = x;
         this.y = y;
+        this.radius = radius;
     }
 
     setCoordinates(x, y) {
@@ -18,15 +20,15 @@ class Exciter {
         this.y = y;
     }
 
-    update() {
-        this.#drawExciter(true);
+    update(isPulsing = true) {
+        this.#drawExciter(isPulsing);
     }
 
     #drawExciter(isPulsing) {
-        this.pulse = isPulsing ? map(sin(frameCount * this.speed), -1, 1, 0, 5) : 0;
+        this.#pulse = isPulsing ? map(sin(frameCount * this.speed), -1, 1, 0, 5) : 0;
         fill('#f56464');
         noStroke();
-        circle(this.x, this.y, 20 + this.pulse);
+        circle(this.x, this.y, this.radius + this.#pulse);
     }
 
     bounce(verts) {
@@ -43,17 +45,22 @@ class Exciter {
         const intersectLineVectorX = this.intersectLine[0].x - this.intersectLine[1].x;
         const intersectLineVectorY = this.intersectLine[0].y - this.intersectLine[1].y;
         const intersectLineVector = createVector(intersectLineVectorX, intersectLineVectorY);
-        //console.log(`vel.heading: ${this.velocity.heading()} - intersectLineVector.heading: ${intersectLineVector.heading()}`);
+        // reflect angle along normal
         let newBounceAngle = 2 * intersectLineVector.heading() - this.velocity.heading();
         let newBounceVector = createVector(cos(newBounceAngle), sin(newBounceAngle));
-        console.log(newBounceVector);
+
         const newBouncePoint = createVector(this.intersectPoint.x + newBounceVector.x, this.intersectPoint.y + newBounceVector.y);
+
         let [newBounceIntersectPoint, _] = edgeIntersect(this.intersectPoint, newBouncePoint, verts);
         line(this.intersectPoint.x, this.intersectPoint.y, newBounceIntersectPoint.x, newBounceIntersectPoint.y);
 
         pop();
 
         pop();
+
+
+        this.setCoordinates(this.x + this.velocity.x / 5, this.y + this.velocity.y / 5);
+        this.#drawExciter(false);
     }
 
     setExciterPath(verts) {
