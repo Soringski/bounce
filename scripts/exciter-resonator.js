@@ -4,7 +4,10 @@ class Exciter {
     speed = 5;
     pulse;
     isDrawingPath = false;
+    isBouncing = false;
     velocity = createVector(0, 0);
+    intersectPoint;
+    intersectLine = [];
     constructor(x, y) {
         this.x = x;
         this.y = y;
@@ -16,10 +19,41 @@ class Exciter {
     }
 
     update() {
+        this.#drawExciter(true);
+    }
+
+    #drawExciter(isPulsing) {
+        this.pulse = isPulsing ? map(sin(frameCount * this.speed), -1, 1, 0, 5) : 0;
         fill('#f56464');
         noStroke();
-        this.pulse = map(sin(frameCount * this.speed), -1, 1, 0, 5);
         circle(this.x, this.y, 20 + this.pulse);
+    }
+
+    bounce(verts) {
+        this.#drawExciter(false);
+
+        push();
+        stroke('#000');
+        strokeWeight(1);
+
+        // THIS BOUNCE
+        line(this.x, this.y, this.intersectPoint.x, this.intersectPoint.y);
+
+        // NEXT BOUNCE
+        const intersectLineVectorX = this.intersectLine[0].x - this.intersectLine[1].x;
+        const intersectLineVectorY = this.intersectLine[0].y - this.intersectLine[1].y;
+        const intersectLineVector = createVector(intersectLineVectorX, intersectLineVectorY);
+        //console.log(`vel.heading: ${this.velocity.heading()} - intersectLineVector.heading: ${intersectLineVector.heading()}`);
+        let newBounceAngle = 2 * intersectLineVector.heading() - this.velocity.heading();
+        let newBounceVector = createVector(cos(newBounceAngle), sin(newBounceAngle));
+        console.log(newBounceVector);
+        const newBouncePoint = createVector(this.intersectPoint.x + newBounceVector.x, this.intersectPoint.y + newBounceVector.y);
+        let [newBounceIntersectPoint, _] = edgeIntersect(this.intersectPoint, newBouncePoint, verts);
+        line(this.intersectPoint.x, this.intersectPoint.y, newBounceIntersectPoint.x, newBounceIntersectPoint.y);
+
+        pop();
+
+        pop();
     }
 
     setExciterPath(verts) {
@@ -39,14 +73,14 @@ class Exciter {
         const endPos = createVector(endX, endY);
 
         push();
-        noFill();
-        let intersectPoint = edgeIntersect(createVector(this.x, this.y), endPos, verts);
-        circle(intersectPoint.x, intersectPoint.y, 20);
+        fill(0);
+        [this.intersectPoint, this.intersectLine] = edgeIntersect(createVector(this.x, this.y), endPos, verts);
+        circle(this.intersectPoint.x, this.intersectPoint.y, 10);
         pop();
 
         // Arrowhead
         strokeWeight(3);
-        const intersectDistance = dist(this.x, this.y, intersectPoint.x, intersectPoint.y);
+        const intersectDistance = dist(this.x, this.y, this.intersectPoint.x, this.intersectPoint.y);
         const mag = this.velocity.mag();
         if (mag > 0) {
             const len = 14;                         // arrow length
@@ -69,7 +103,7 @@ class Exciter {
         // draw dotted pathline
         strokeWeight(1);
         drawingContext.setLineDash([5, 5]);
-        line(this.x, this.y, intersectPoint.x, intersectPoint.y);
+        line(this.x, this.y, this.intersectPoint.x, this.intersectPoint.y);
 
         pop();
     }
@@ -94,16 +128,32 @@ class Resonator {
         noFill();
         stroke('#000');
         strokeWeight(3);
+        this.#drawShape();
+        for (let vert of this.verts) {
+            circle(vert.x, vert.y, 12);
+        }
+        push();
+        noFill();
+        strokeWeight(1);
+        for (let vert of this.verts) {
+            circle(vert.x, vert.y, 22);
+        }
+        pop();
+        strokeWeight(1);
+        noFill();
+        circle(this.x, this.y, this.radius * 2);
+    }
+
+    drawBackground() {
+        fill(255);
+        this.#drawShape();
+    }
+
+    #drawShape() {
         beginShape();
         for (let vert of this.verts) {
             vertex(vert.x, vert.y);
-            push();
-            fill('#000');
-            circle(vert.x, vert.y, 10);
-            pop();
         }
         endShape();
-        strokeWeight(1);
-        circle(this.x, this.y, this.radius * 2);
     }
 }

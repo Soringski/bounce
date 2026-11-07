@@ -20,14 +20,22 @@ function setup() {
 }
 
 function draw() {
-    background(255);
+    const bg = exciter.isBouncing ? 251 : 255;
+    background(bg);
+
+    resonator.drawBackground();
+
     if (exciter.isDrawingPath) {
         exciter.update();
         exciter.setExciterPath(resonator.verts);
-    } else {
+    }
+    else if (exciter.isBouncing) {
+        exciter.bounce(resonator.verts);
+    }
+    else {
         if (onCanvas() && !startDraggingOffBounds) {
             exciter.speed = 25;
-            let intersectPoint = edgeIntersect(createVector(resonator.x, resonator.y), createVector(mouseX, mouseY), resonator.verts);
+            let [intersectPoint, _] = edgeIntersect(createVector(resonator.x, resonator.y), createVector(mouseX, mouseY), resonator.verts);
             if (dist(resonator.x, resonator.y, mouseX, mouseY) > dist(resonator.x, resonator.y, intersectPoint.x, intersectPoint.y)) {
                 exciter.setCoordinates(intersectPoint.x, intersectPoint.y);
                 exciter.update();
@@ -41,8 +49,9 @@ function draw() {
             exciter.update();;
         }
     }
-    resonator.update();
     drawCursor();
+
+    resonator.update();
 }
 
 function onCanvas() {
@@ -63,6 +72,7 @@ function mouseWheel(event) {
 }
 
 function mouseReleased() {
+    if (exciter.isDrawingPath) exciter.isBouncing = true;
     exciter.isDrawingPath = false;
     startDraggingOffBounds = false;
 }
@@ -79,23 +89,22 @@ function mouseDragged() {
     }
 }
 
-function edgeIntersect(o, p, verts) {
-    let rx = p.x - o.x, ry = p.y - o.y;
+function edgeIntersect(o, p, verts, skipEdge = -1) {
+    const rx = p.x - o.x, ry = p.y - o.y;
+    let best = [null, null, -1], bestT = Infinity;
     for (let i = 0; i < verts.length; i++) {
-        let c = verts[i];
-        let d = verts[(i + 1) % verts.length];
-        let sx = d.x - c.x, sy = d.y - c.y;
-
-        let denominator = rx * sy - ry * sx;
-        if (denominator === 0) continue;
-
-        let t = ((c.x - o.x) * sy - (c.y - o.y) * sx) / denominator;
-        let u = ((c.x - o.x) * ry - (c.y - o.y) * rx) / denominator;
-
-        if (t >= 0 && u >= 0 && u <= 1) {
-            return createVector(o.x + t * rx, o.y + t * ry);
+        if (i === skipEdge) continue;                 // don't re-hit the wall we're on
+        const c = verts[i];
+        const d = verts[(i + 1) % verts.length];
+        const sx = d.x - c.x, sy = d.y - c.y;
+        const denominator = rx * sy - ry * sx;
+        if (abs(denominator) < 1e-9) continue;        // parallel, or zero-length edge
+        const t = ((c.x - o.x) * sy - (c.y - o.y) * sx) / denominator;
+        const u = ((c.x - o.x) * ry - (c.y - o.y) * rx) / denominator;
+        if (t > 1e-6 && u >= 0 && u <= 1 && t < bestT) {   // strictly ahead, keep nearest
+            bestT = t;
+            best = [createVector(o.x + t * rx, o.y + t * ry), [c, d], i];
         }
     }
-    // return null;
-    return createVector(0, 0);
+    return best;   // [null, null, -1] if nothing hit
 }
