@@ -25,20 +25,28 @@ function draw() {
 
     resonator.drawBackground();
 
+    // Walls for the exciter's centre: the real walls pulled in by the disc's radius
+    // (circle() takes a diameter, so that's radius / 2) plus half the wall's strokeWeight(3).
+    // When the centre reaches these, the edge of the disc touches the real wall.
+    const walls = resonator.insetVerts(exciter.radius / 2 + 1.5);
+
     if (exciter.isDrawingPath) {
         exciter.update();
-        exciter.setExciterPath(resonator.verts);
+        exciter.setExciterPath(walls);
     }
     else if (exciter.isBouncing) {
-        exciter.bounce(resonator.verts);
+        exciter.bounce(walls);
     }
     else {
         if (onCanvas() && !startDraggingOffBounds) {
-            exciter.speed = 25;
-            let [intersectPoint, _] = edgeIntersect(createVector(resonator.x, resonator.y), createVector(mouseX, mouseY), resonator.verts);
+            exciter.pulseSpeed = 25;
+            let [intersectPoint, _] = edgeIntersect(createVector(resonator.x, resonator.y), createVector(mouseX, mouseY), walls);
             if (intersectPoint !== null) {
                 if (dist(resonator.x, resonator.y, mouseX, mouseY) > dist(resonator.x, resonator.y, intersectPoint.x, intersectPoint.y)) {
-                    exciter.setCoordinates(intersectPoint.x, intersectPoint.y);
+                    // Cursor is past the walls: park the exciter 1px inside them, not on them.
+                    // Sitting exactly on a wall, a pull that aims outward finds no wall to hit.
+                    const inset = createVector(resonator.x - intersectPoint.x, resonator.y - intersectPoint.y).setMag(1);
+                    exciter.setCoordinates(intersectPoint.x + inset.x, intersectPoint.y + inset.y);
                     exciter.update();
                 } else {
                     exciter.setCoordinates(mouseX, mouseY);
@@ -46,9 +54,9 @@ function draw() {
                 }
             }
         } else {
-            exciter.speed = 5;
+            exciter.pulseSpeed = 5;
             exciter.setCoordinates(resonator.x, resonator.y);
-            exciter.update();;
+            exciter.update();
         }
     }
     drawCursor();
@@ -68,7 +76,9 @@ function drawCursor() {
 }
 
 function mouseReleased() {
-    if (exciter.isDrawingPath) exciter.isBouncing = true;
+    // only launch if the current aim actually hits a wall
+    // (also covers re-aiming mid-bounce and letting go with no valid aim)
+    if (exciter.isDrawingPath) exciter.isBouncing = exciter.intersectPoint !== null;
     exciter.isDrawingPath = false;
     startDraggingOffBounds = false;
 }
