@@ -11,6 +11,8 @@ let bubbles = [];
 // block canvas changes from hovering while adjusting sliders
 let startDraggingOffBounds = false;
 
+let tick;
+
 function resetSketch() {
     canvasSize = 450;
     setExciterPath = false;
@@ -21,9 +23,10 @@ function resetSketch() {
     exciter = new Exciter(resonator.x, resonator.y, 20);
 }
 
-function setup() {
+async function setup() {
     createCanvas(canvasSize, canvasSize);
     resetSketch();
+    tick = await loadSound("/assets/tick.wav");
 }
 
 function draw() {

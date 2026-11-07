@@ -88,6 +88,8 @@ class Exciter {
                 break;
             }
             bubbles.push(new Bubble(this.intersectPoint.x, this.intersectPoint.y, 20));
+            // play tick
+            tick.start();
             [this.velocity, this.intersectPoint, this.intersectLine] = next;
 
         }
