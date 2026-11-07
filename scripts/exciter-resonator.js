@@ -95,15 +95,17 @@ class Exciter {
         }
 
         // Then draw: this leg, the next leg, and the exciter (once)
-        push();
-        stroke('#000');
-        strokeWeight(1);
-        drawingContext.setLineDash([3, 10]);
-        line(this.intersectPoint.x, this.intersectPoint.y, this.x, this.y);
-        const preview = this.#nextLeg(verts);
-        drawingContext.setLineDash([1.5, 10]);
-        if (preview !== null) line(this.intersectPoint.x, this.intersectPoint.y, preview[1].x, preview[1].y);
-        pop();
+        if (this.speed !== 0) {
+            push();
+            stroke('#000');
+            strokeWeight(1);
+            drawingContext.setLineDash([3, 10]);
+            line(this.intersectPoint.x, this.intersectPoint.y, this.x, this.y);
+            const preview = this.#nextLeg(verts);
+            drawingContext.setLineDash([1.5, 10]);
+            if (preview !== null) line(this.intersectPoint.x, this.intersectPoint.y, preview[1].x, preview[1].y);
+            pop();
+        }
         this.#drawExciter(false);
     }
 

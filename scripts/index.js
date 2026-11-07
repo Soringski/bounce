@@ -14,8 +14,15 @@ rangeInput.oninput = () => {
 
 for (let elem of document.querySelectorAll('main')) {
     elem.onwheel = (event) => {
-        rangeInput.value = event.deltaY < 0 ?
-            Number(rangeInput.value) + 1 : Number(rangeInput.value) - 1;
-        rangeInput.dispatchEvent(new Event('input'));
+        if (!window.isBouncing) {
+            rangeInput.value = event.deltaY < 0 ?
+                Number(rangeInput.value) + 1 : Number(rangeInput.value) - 1;
+            rangeInput.dispatchEvent(new Event('input'));
+        } else {
+
+            let speed = event.deltaY < 0 ? exciter.speed + 10 : exciter.speed - 10;
+            speed = Math.max(0, speed);
+            exciter.speed = speed;
+        }
     };
 }

@@ -1,6 +1,11 @@
 /// <reference types="p5/global" />
 
-// resonator sides through window.sides on index.js
+
+// window variables:
+// window.sides: amount of resonator sides
+// window.exciterSpeed: travel speed of the exciter
+// window.isBouncing: boolean lets index.js switch mousewheel events (sides/exciterSpeed)
+
 let canvasSize = 450;
 let center;
 let setExciterPath = false;
@@ -21,6 +26,7 @@ function resetSketch() {
     angleMode(DEGREES);
     resonator = new Resonator(center.x, center.y, 175);
     exciter = new Exciter(resonator.x, resonator.y, 20);
+    window.isBouncing = false;
 }
 
 async function setup() {
@@ -48,6 +54,7 @@ function draw() {
         exciter.setExciterPath(walls);
     }
     else if (exciter.isBouncing) {
+        drawSpeed();
         exciter.bounce(walls);
     }
     else {
@@ -81,6 +88,17 @@ function onCanvas() {
     return mouseX < canvasSize && mouseX > 0 && mouseY < canvasSize && mouseY > 0;
 }
 
+function drawSpeed() {
+    push();
+    noStroke();
+    fill("#000");
+    textSize(15);
+    text('./speed', 12, 50);
+    textSize(30);
+    textStyle(BOLD);
+    text(Math.round(exciter.speed), 20, 35);
+    pop();
+}
 
 function drawCursor() {
     push();
@@ -93,6 +111,7 @@ function mouseReleased() {
     // only launch if the current aim actually hits a wall
     // (also covers re-aiming mid-bounce and letting go with no valid aim)
     if (exciter.isDrawingPath) exciter.isBouncing = exciter.intersectPoint !== null;
+    if (exciter.isBouncing) window.isBouncing = true;
     exciter.isDrawingPath = false;
     startDraggingOffBounds = false;
 }
