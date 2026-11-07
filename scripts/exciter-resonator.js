@@ -1,5 +1,15 @@
 "use strict";
 
+class Bubble {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+    pop() {
+        console.log(`pop at ${this.x} ${this.y}`);
+    }
+}
+
 class Exciter {
     radius;
     pulseSpeed = 5;

@@ -1,35 +1,41 @@
 /// <reference types="p5/global" />
 
-// resonator sides through window.sides from index.js
+// resonator sides through window.sides on index.js
 let canvasSize = 450;
 let center;
 let setExciterPath = false;
 let resonator;
 let exciter;
+let bubbles = [];
 
 // block canvas changes from hovering while adjusting sliders
 let startDraggingOffBounds = false;
 
-function setup() {
-    createCanvas(canvasSize, canvasSize);
+function resetSketch() {
+    canvasSize = 450;
+    setExciterPath = false;
+    bubbles = [];
     center = createVector(width / 2, width / 2);
     angleMode(DEGREES);
-
     resonator = new Resonator(center.x, center.y, 175);
     exciter = new Exciter(resonator.x, resonator.y, 20);
+}
+
+function setup() {
+    createCanvas(canvasSize, canvasSize);
+    resetSketch();
 }
 
 function draw() {
     const bg = exciter.isBouncing ? 251 : 255;
     background(bg);
-
     resonator.drawBackground();
 
-    // Walls for the exciter's centre: the real walls pulled in by the disc's radius
-    // (circle() takes a diameter, so that's radius / 2) plus half the wall's strokeWeight(3).
-    // When the centre reaches these, the edge of the disc touches the real wall.
+    // inset walls by resonator stroke width and radius to prevent 
+    // out of bounds bouncing
     const walls = resonator.insetVerts(exciter.radius / 2 + 1.5);
 
+    // User is click-dragging
     if (exciter.isDrawingPath) {
         exciter.update();
         exciter.setExciterPath(walls);
@@ -83,15 +89,21 @@ function mouseReleased() {
     startDraggingOffBounds = false;
 }
 
-function mousePressed() {
-    if (!onCanvas()) {
-        startDraggingOffBounds = true;
+function mousePressed(event) {
+    if (mouseButton.left) {
+        if (!onCanvas()) {
+            startDraggingOffBounds = true;
+        }
+    } else if (mouseButton.right) {
+        resetSketch();
     }
 }
 
 function mouseDragged() {
-    if (onCanvas()) {
-        if (!startDraggingOffBounds) exciter.isDrawingPath = true;
+    if (mouseButton.left) {
+        if (onCanvas()) {
+            if (!startDraggingOffBounds) exciter.isDrawingPath = true;
+        }
     }
 }
 
