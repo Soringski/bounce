@@ -89,10 +89,12 @@ class Exciter {
             }
             bubbles.push(new Bubble(this.intersectPoint.x, this.intersectPoint.y, 20));
             // play tick
-            tick.start();
+            try { tick.start(); } catch (e) { console.log(e); }
             [this.velocity, this.intersectPoint, this.intersectLine] = next;
 
         }
+
+
 
         // Then draw: this leg, the next leg, and the exciter (once)
         if (this.speed !== 0) {
