@@ -14,22 +14,74 @@ body {
     height: 100%;
 }
 
-p,
-.container {
-    margin-bottom: 10px;
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+        'topLeft rightSide'
+        'p5 rightSide';
+    gap: 15px;
+}
+
+#topLeft {
+    grid-area: topLeft;
 }
 
 p {
-    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+#p5 {
+    grid-area: p5;
+}
+
+#rightSide {
+    grid-area: rightSide;
 }
 
 .container {
-    display: flex;
-    flex-direction: column;
-    width: 420px;
-    padding: 15px;
     background-color: #f2f2f2;
     border-radius: 20px;
+    padding: 20px;
+}
+
+.exciter-mute {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.exciter-mute {
+    float: right;
+    width: 35px;
+    position: relative;
+    top: -10px;
+    margin-bottom: -10px;
+    right: -11px;
+}
+
+.exciter-mute:hover {
+    content: url('../assets/bi--volume-mute-fill.svg');
+    cursor: pointer;
+}
+
+.btn-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: -5px;
+    margin-bottom: 10px;
+}
+
+.btn-active {
+    background-color: #e0e0e0;
+    border: solid 1px black;
+    border-radius: 2px;
+}
+
+button {
+    padding: 2px 20px;
 }
 
 #defaultCanvas1 {
@@ -66,6 +118,53 @@ p {
     font-weight: 600;
 }
 
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-text {
+    font-size: smaller;
+    font-weight: 300;
+}
+
+.tooltip .tooltip-text {
+    visibility: hidden;
+    width: 160px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 10px;
+    position: absolute;
+    z-index: 1;
+    top: 125%;
+    left: 38%;
+    margin-left: -80px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip .tooltip-text::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    /* margin-left: -5px; */
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #555 transparent;
+}
+
+.tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+
+
+
 /* reset browser input-range look */
 .range {
     -webkit-appearance: none;
@@ -90,6 +189,7 @@ p {
     background: #bdbdbd;
     border: 0;
     border-radius: 0;
+    margin-bottom: 10px;
 }
 
 .range::-webkit-slider-thumb {

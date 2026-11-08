@@ -16,34 +16,122 @@
 </head>
 
 <body>
-    <div class="container">
-        <p>Settings</p>
-        <div class="input-field">
-            <div class="input-head">
-                <label for="range-input">./ sides</label>
-                <output for="range-input" id="range-output"></output>
+    <div class="grid">
+        <div class="container" id="topLeft">
+            <p>Resonator</p>
+            <div class="input-field">
+                <div class="input-head">
+                    <label for="range-input-sides">./ Sides</label>
+                    <output for="range-input" id="range-output-sides"></output>
+                </div>
+                <div class="tooltip">
+                    <input type="range" class="range" id="range-input-sides" min="3" max="20" step="1" value="6">
+                    <span class="tooltip-text" style="margin-bottom: 13px">
+                        Set amount of sides on the resonator.
+                    </span>
+                </div>
             </div>
-            <input type="range" class="range" id="range-input" min="3" max="20" step="1" value="8">
+            <div class="input-field">
+                <div class="input-head">
+                    <label for="range-input-division">./ Divisions</label>
+                    <output for="range-input" id="range-output-division"></output>
+                </div>
+                <div class="tooltip">
+                    <input type="range" class="range" id="range-input-division" min="1" max="12" step="1" value="1">
+                    <span class="tooltip-text">
+                        Set the number of divisions on every Resonator edge.
+                    </span>
+                </div>
+            </div>
+
         </div>
-        <p>Controls</p>
-        <div class="input-head">
-            <label for="">./ Exciter Velocity + Speed</label>
-            <output for="">Left Mouse Drag</output>
-        </div>
-        <div class="input-head">
-            <label for="">./ Resonator Sidecount</label>
-            <output for="">Mousewheel on input</output>
-        </div>
-        <div class="input-head">
-            <label for="">./ Exciter Speed</label>
-            <output for="">Mousewheel on bounce</output>
-        </div>
-        <div class="input-head">
-            <label for="">./ Reset</label>
-            <output for="">Right Mouse Button</output>
+        <main id="p5"></main>
+        <div class="container" id="rightSide">
+            <p style="display: inline-block;">Exciter</p>
+            <img class="exciter-mute" src="assets/bi--volume-mute.svg" alt="mute">
+            <div class="input-field">
+                <div class="input-head">
+                    <label for="range-input-type">./ Type</label>
+                    <output for="range-input-type" id="range-output-type">Tick</output>
+                </div>
+                <div class="btn-box" id="btn-box-type">
+                    <div class="tooltip">
+                        <button class="btn-active">Tick</button>
+                        <span class="tooltip-text">
+                            Every trigger sounds a uniform tick.
+                        </span>
+                    </div>
+                    <div class="tooltip">
+                        <button>Synth</button>
+                        <span class="tooltip-text">
+                            Shape the sound of the trigger.
+                        </span>
+                    </div>
+                    <div class="tooltip">
+                        <button>Step</button>
+                        <span class="tooltip-text">
+                            Set a step list. Every bounce triggers the next step.
+                        </span>
+                    </div>
+                    <div class="tooltip">
+                        <button>Noise</button>
+                        <span class="tooltip-text">
+                            A constant speed resulting in varia.ble triggers
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+            <div class="input-field">
+                <div class="input-head">
+                    <label for="range-input">./ Mode</label>
+                    <output for="range-input" id="range-output-mode">Fixed Speed</output>
+                </div>
+                <div class="btn-box" id="btn-box-mode">
+                    <div class="tooltip">
+                        <button class="btn-active tooltip">Fixed Speed</button>
+                        <span class="tooltip-text">
+                            A constant speed resulting in variable triggers.
+                        </span>
+                    </div>
+                    <div class="tooltip">
+                        <button>Fixed BPM</button>
+                        <span class="tooltip-text">
+                            Uniform intervals between triggers, depending on which division of the wall it bounces from:
+                            <br>
+                            1/8, 1/4, 1/2 or 1/1
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="input-field">
+                <div class="input-head">
+                    <label for="range-input">./ Speed</label>
+                    <output for="range-input" id="range-output-speed"></output>
+                </div>
+                <input type="range" class="range" min="0" max="1000" step="1" value="8" id="range-input-speed">
+            </div>
+            <div style="height:200px"></div>
+            <hr style="margin-top: 30px;">
+            <p style="margin-top: 10px;">Controls</p>
+            <div class="input-head">
+                <label for="">./ Exciter Velocity + Speed</label>
+                <output for="">Left Mouse Drag</output>
+            </div>
+            <div class="input-head">
+                <label for="">./ Resonator Sidecount</label>
+                <output for="">Mousewheel on input</output>
+            </div>
+            <div class="input-head">
+                <label for="">./ Exciter Speed</label>
+                <output for="">Mousewheel on bounce</output>
+            </div>
+            <div class="input-head">
+                <label for="">./ Reset</label>
+                <output for="">Right Mouse Button</output>
+            </div>
         </div>
     </div>
-    <main></main>
 </body>
 
 </html>
