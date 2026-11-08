@@ -17,6 +17,8 @@ let bubbles = [];
 let startDraggingOffBounds = false;
 
 let tick;
+let sounds = []; // used for muting
+let volume = 1;
 
 function resetSketch() {
     canvasSize = 450;
@@ -32,7 +34,9 @@ function resetSketch() {
 async function setup() {
     createCanvas(canvasSize, canvasSize);
     resetSketch();
+
     tick = await loadSound("/assets/tick.wav");
+    sounds.push(tick);
 }
 
 function draw() {

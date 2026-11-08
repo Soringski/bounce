@@ -61,8 +61,23 @@ p {
     right: -11px;
 }
 
-.exciter-mute:hover {
-    content: url('../assets/bi--volume-mute-fill.svg');
+.exciter-mute-volume:hover {
+    content: url('../assets/icons/bi--volume-up-fill.svg');
+    cursor: pointer;
+}
+
+.exciter-mute-volume {
+    content: url('../assets/icons/bi--volume-up.svg');
+    cursor: pointer;
+}
+
+.exciter-mute-mute:hover {
+    content: url('../assets/icons/bi--volume-mute-fill.svg');
+    cursor: pointer;
+}
+
+.exciter-mute-mute {
+    content: url('../assets/icons/bi--volume-mute.svg');
     cursor: pointer;
 }
 

@@ -15,6 +15,14 @@ const rangeOutputMode = document.getElementById('range-output-mode');
 const rangeOutputSpeed = document.getElementById('range-output-speed');
 const rangeInputSpeed = document.getElementById('range-input-speed');
 
+const imgMute = document.getElementById('img-mute');
+imgMute.onclick = () => {
+    imgMute.classList.toggle('exciter-mute-mute');
+    imgMute.classList.toggle('exciter-mute-volume');
+    volume = Number(!volume);
+    sounds.forEach(x => x.amp(volume));
+};
+
 rangeInputSpeed.oninput = () => {
     rangeOutputSpeed.textContent = rangeInputSpeed.value;
     exciter.speed = Number(rangeInputSpeed.value);
