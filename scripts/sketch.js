@@ -52,6 +52,7 @@ function draw() {
     if (exciter.isDrawingPath) {
         exciter.update();
         exciter.setExciterPath(walls);
+        drawSpeed();
     }
     else if (exciter.isBouncing) {
         drawSpeed();
@@ -114,6 +115,9 @@ function mouseReleased() {
     if (exciter.isBouncing) window.isBouncing = true;
     exciter.isDrawingPath = false;
     startDraggingOffBounds = false;
+
+    // set speed slider
+    document.getElementById('range-input-speed').value = exciter.speed;
 }
 
 function mousePressed(event) {
