@@ -43,3 +43,5 @@ Everything in this repo is my own work, except for the parts listed below:
 | CSS RESET | [Erik Meyer](http://meyerweb.com/eric/tools/css/reset/) |  |
 | Electron starter code | [Electron docs](https://www.electronjs.org/docs/latest/) | App lifecycle handling on Windows, Linux and macOS |
 | `edgeIntersect()` in [`scripts/sketch.js`](scripts/sketch.js) | AI-assisted | Generated, then tested and documented by me |
+
+AI also assisted me in solving unwanted vector behaviour.
